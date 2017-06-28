@@ -1168,7 +1168,11 @@ class ClasterizationCalculator(QThread):
         s = {}
         for index, p in enumerate(P):
             for key, value in s.items():
-                if abs(p - value) <= minDifference and C[index][index] == C[key][key] == C[index][key] == C[key][index]:
+                if abs(p - value) <= minDifference and (\
+                    abs(C[index][index] - C[key][key]) <= minDifference or \
+                    abs(C[index][key] - C[key][index]) <= minDifference or \
+                    abs(C[index][index] - C[index][key]) <= minDifference or \
+                    abs(C[key][key] - C[key][index]) <= minDifference):
                     break
             else:
                 s[index] = p
@@ -1180,7 +1184,11 @@ class ClasterizationCalculator(QThread):
             if not index in s.keys():
                 if p > s[minSeedPower]:
                     for key, value in s.items():
-                        if abs(p - value) <= minDifference and C[index][index] == C[key][key] == C[index][key] == C[key][index]:
+                        if abs(p - value) <= minDifference and (\
+                            abs(C[index][index] - C[key][key]) <= minDifference or \
+                            abs(C[index][key] - C[key][index]) <= minDifference or \
+                            abs(C[index][index] - C[index][key]) <= minDifference or \
+                            abs(C[key][key] - C[key][index]) <= minDifference):
                             break
                     else:
                         del(s[minSeedPower])
